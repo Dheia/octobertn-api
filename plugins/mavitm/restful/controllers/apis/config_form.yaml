@@ -1,0 +1,13 @@
+name: Apis
+modelClass: Mavitm\Restful\Models\Api
+form: $/mavitm/restful/models/api/fields.yaml
+defaultRedirect: mavitm/restful/apis
+create:
+    title: 'mavitm.restful::lang.backend.api_create'
+    redirect: 'mavitm/restful/apis/update/:id'
+    redirectClose: mavitm/restful/apis
+update:
+    title: 'mavitm.restful::lang.backend.api_update'
+    redirect: mavitm/restful/apis
+    redirectClose: mavitm/restful/apis
+preview: {  }

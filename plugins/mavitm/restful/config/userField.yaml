@@ -1,0 +1,26 @@
+cilent_id:
+    label: 'mavitm.restful::lang.backend.user_cilent_id_field'
+    oc.commentPosition: ''
+    span: auto
+    type: text
+    tab: 'mavitm.restful::lang.plugin.name'
+daily_request_limit:
+    label: 'mavitm.restful::lang.backend.daily_request_limit_field'
+    oc.commentPosition: ''
+    span: auto
+    type: number
+    tab: 'mavitm.restful::lang.plugin.name'
+secret_key:
+    label: 'mavitm.restful::lang.backend.secret_key_field'
+    oc.commentPosition: ''
+    span: full
+    type: text
+    tab: 'mavitm.restful::lang.plugin.name'
+allowed_ip:
+    label: 'mavitm.restful::lang.backend.user_allowed_ip_field'
+    size: ''
+    oc.commentPosition: ''
+    span: full
+    type: textarea
+    comment: 'mavitm.restful::lang.backend.user_allowed_ip_field_comment'
+    tab: 'mavitm.restful::lang.plugin.name'

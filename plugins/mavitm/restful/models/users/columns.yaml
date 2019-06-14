@@ -1,0 +1,16 @@
+columns:
+    id:
+        label: ID
+        type: number
+        sortable: true
+    User:
+        label: 'mavitm.restful::lang.backend.select_user'
+        type: text
+        searchable: true
+        sortable: true
+        select: name
+        relation: user
+    created_at:
+        label: 'mavitm.restful::lang.backend.api_create'
+        type: datetime
+        sortable: true

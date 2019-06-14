@@ -1,0 +1,6 @@
+plugin:
+    name: 'toannang.settings::lang.plugin.name'
+    description: 'toannang.settings::lang.plugin.description'
+    author: toannang
+    icon: oc-icon-gears
+    homepage: 'https://toannang.com.vn'

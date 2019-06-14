@@ -1,0 +1,93 @@
+<div class="row">
+
+    <div class="col-xs-6">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.set_type')) ?></label>
+            <select class="form-control" name="config_data[set_type]">
+                <option value="put" <?=($set_type == "put" ? 'selected':'');?>>
+                    <?= e(trans('mavitm.restful::lang.backend.select_put')) ?>
+                </option>
+                <option value="patch" <?=($set_type == "patch" ? 'selected':'');?>>
+                    <?= e(trans('mavitm.restful::lang.backend.select_patch')) ?>
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-xs-6">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.return_data_type'));?></label>
+            <select class="form-control" name="config_data[return_data_type]">
+                <option value="all_model_data"><?= e(trans('mavitm.restful::lang.backend.set_all_model_data_text'));?></option>
+                <option value="process_result"><?= e(trans('mavitm.restful::lang.backend.set_process_result_text'));?></option>
+                <option value="send_request_back"><?= e(trans('mavitm.restful::lang.backend.set_send_request_back_text'));?></option>
+            </select>
+        </div>
+    </div>
+
+</div>
+
+<h2><?= e(trans('mavitm.restful::lang.backend.api_displayed_field')) ?></h2>
+<div class="control-list">
+    <table class="table data">
+        <thead>
+        <tr>
+            <th class="list-checkbox">
+                <div class="checkbox custom-checkbox nolabel">
+                    <input type="checkbox" id="Lists-<?php echo $checkboxrandstr;?>All" class="checkboxall" data-target=".check<?=$arearandstr;?>" />
+                    <label for="Lists-<?php echo $checkboxrandstr;?>All"></label>
+                </div>
+            </th>
+            <th><span><?= e(trans('mavitm.restful::lang.backend.fieldName')) ?></span></th>
+            <th><span><?= e(trans('mavitm.restful::lang.backend.required')) ?></span></th>
+            <th><span><?= e(trans('mavitm.restful::lang.backend.requestIndexName')) ?></span>
+            <th><span><?= e(trans('mavitm.restful::lang.backend.defaultvalue')) ?></span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if(!empty($fields) && count($fields)){foreach($fields as $key=>$name){?>
+        <tr>
+            <td class="list-checkbox nolink">
+
+                <div class="checkbox custom-checkbox nolabel">
+                    <input class="check<?=$arearandstr;?>"
+                           type="checkbox"
+                           name="selectfields[active][<?php echo $name;?>]"
+                           id="Lists-<?php echo $checkboxrandstr;?>-<?php echo $key;?>"
+                           value="<?php echo @end(explode('.',$name));?>" <?=(in_array(@end(explode('.',$name)), $activeFields)  ? 'checked':'');?>>
+
+                    <label for="Lists-<?php echo $checkboxrandstr;?>-<?php echo $key;?>">Check</label>
+                </div>
+
+            </td>
+            <td>
+                <label for="Lists-<?php echo $checkboxrandstr;?>-<?php echo $key;?>" class="hand"><?php echo $name;?></label>
+            </td>
+            <td>
+                <div class="checkbox custom-checkbox nolabel">
+                    <input
+                            type="checkbox"
+                            id="required-<?php echo $checkboxrandstr;?>-<?php echo $key;?>"
+                            name="config_data[required][<?php echo $name;?>]"
+                            value="1" <?=(!empty($required[$name]) ? 'checked':'');?>>
+                    <label for="required-<?php echo $checkboxrandstr;?>-<?php echo $key;?>">Check</label>
+                </div>
+            </td>
+            <td>
+                <input type="text"
+                       name="config_data[requestindex][<?php echo $name;?>]"
+                       class="form-control"
+                       value="<?php echo ( empty($requestindex[$name]) ? ( empty($requestindex)? @end(explode('.',$name)) : '' ) : $requestindex[$name] );?>">
+            </td>
+            <td>
+                <input type="text"
+                       name="config_data[defaultvalue][<?php echo $name;?>]"
+                       class="form-control" placeholder="<?= e(trans('mavitm.restful::lang.backend.placeholderDefaultvalueType')) ?>"
+                       value="<?php echo ( empty($defaultvalue[$name]) ? '' : htmlspecialchars($defaultvalue[$name]) );?>">
+            </td>
+        </tr>
+        <?php }}?>
+        </tbody>
+    </table>
+</div>

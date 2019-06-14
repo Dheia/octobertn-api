@@ -1,0 +1,508 @@
+<?php namespace Mavitm\Restful\Components;
+
+use Log;
+use Input;
+use Event;
+use Request;
+use Response;
+use Mavitm\Restful\Classes\Models;
+use Mavitm\Restful\Classes\Signature;
+use October\Rain\Exception\ApplicationException;
+use Psy\Exception\ErrorException;
+use Cms\Classes\CodeBase;
+use RainLab\User\Models\User;
+use October\Rain\Argon\Argon;
+use Cms\Classes\ComponentBase;
+use Mavitm\Restful\Models\Api;
+use Mavitm\Restful\Models\Counter;
+use Mavitm\Restful\Classes\Translate;
+use Mavitm\Restful\Classes\Restful;
+
+class Restapi extends ComponentBase
+{
+    public $currentValues = [];
+
+    /**
+     * api model data
+     * @var
+     */
+    private $restInfo;
+
+    private $user;
+
+    protected $parameters;
+    /*
+     * api return data
+     */
+    public $rawData;
+
+    protected $restModel, $restJsonableFields;
+
+    public function componentDetails()
+    {
+        return [
+            'name'        => 'mavitm.restful::lang.components.restapicomponent',
+            'description' => ''
+        ];
+    }
+
+    public function defineProperties()
+    {
+        return [
+            'restID' => [
+                'title'       => 'mavitm.restful::lang.components.selectApi',
+                'type'        => 'dropdown',
+                'options'     => Api::get()->lists("name","id")
+            ],
+            'userID' => [
+                'title'       => 'mavitm.restful::lang.components.userID',
+                'default'     => '{{ :user }}',
+                'type'        => 'string'
+            ],
+            'cilentID' => [
+                'title'       => 'mavitm.restful::lang.components.cilentID',
+                'description' => '',
+                'default'     => '{{ :id }}',
+                'type'        => 'string'
+            ],
+            'token' => [
+                'title'       => 'mavitm.restful::lang.components.token',
+                'description' => '',
+                'default'     => '{{ :token }}',
+                'type'        => 'string'
+            ],
+        ];
+    }
+
+    private function prepareValues()
+    {
+
+        $time = Argon::now();
+
+        $this->currentValues['currentTime'] = $time;
+        $this->currentValues['currentDate'] = $time->format('Y-m-d',$time);
+        $this->currentValues['ip']          = Restful::instance()->getRealIpAddr();
+    }
+
+    private function verifyToken($userSecret, $parameters, $inputToken = null)
+    {
+        if(!$inputToken)
+        {
+            if(empty($parameters['token']))
+            {
+                throw new ApplicationException(Translate::getTranslate("Token required"));
+            }
+
+            $inputToken = $parameters['token'];
+        }
+
+        $selfToken = Signature::instance()->getSign($userSecret, $parameters);
+
+        return $inputToken == $selfToken ? true : false;
+    }
+
+    /**
+     * ajax request construct
+     */
+    public function init()
+    {
+        parent::init();
+        $this->prepareValues();
+    }
+
+    public function onRun()
+    {
+
+        $this->prepareValues();
+
+        $userID     = $this->property('userID');
+        $restID     = $this->property('restID');
+        $clientID   = $this->property('cilentID');
+        $token      = $this->property('token');
+
+        $this->restInfo = $restInfo   = Api::find($restID);
+
+        $this->user = User::where("id", "=", $userID)
+            ->where("cilent_id", "=", $clientID)
+            ->first();
+
+        if(empty($this->restInfo->id))
+        {
+            return Restful::instance()->failResponse(['success'=>false, 'code' => '404', 'message' => 'Not Found'], 404);
+            //return Response::json(['success'=>false, 'code' => '404', 'message' => 'Not Found'], 404);
+        }
+
+        Restful::instance()
+            ->setUser($this->user)
+            ->setApi($this->restInfo);
+
+        $this->parameters = $this->restInfo['config_data']['request_type'] == "get" ? Input::all() : post();
+
+        if(empty($this->user->id))
+        {
+            return Restful::instance()->failResponse(['success'=>false, 'code' => '400', 'message' => 'Bad Request'], 400);
+        }
+
+        if(intval($this->user->daily_request_limit) > 0)
+        {
+            if($this->requestCounter() > $this->user->daily_request_limit)
+            {
+                return Restful::instance()->failResponse(['success'=>false, 'code' => '402', 'message' => 'Daily request limit'], 402);
+            }
+        }
+
+        if($this->restInfo->ispublic != 1)
+        {
+            try
+            {
+                $verifyToken = $this->verifyToken($this->user->secret_key, $this->parameters, $token);
+            } catch (\Exception $e)
+            {
+                return Restful::instance()->failResponse(['success' => false, 'code' => '401', 'message' => $e->getMessage()], 401);
+            }
+
+            if(!$verifyToken)
+            {
+                return Restful::instance()->failResponse(['success' => false, 'code' => '401', 'message' => 'Unauthorized'], 401);
+            }
+
+            $userIPS = explode(',', $this->user->allowed_ip);
+
+            if(!in_array(Restful::instance()->getRealIpAddr(), $userIPS))
+            {
+                if(!in_array("0.0.0.0", $userIPS))
+                {
+                    return Restful::instance()->failResponse(['success' => false, 'code' => '403', 'message' => 'Forbidden'], 403);
+                }
+            }
+
+            if(!class_exists($restInfo['primary_model']))
+            {
+                return Restful::instance()->failResponse(['success'=>false, 'code' => '500', 'message' => 'Internal Server Error'], 500);
+            }
+        }
+        
+        if($restInfo['config_data']['proces'] == "set")
+        {
+            return $this->setProces();
+        }
+        elseif($restInfo['config_data']['proces'] == "get")
+        {
+            return $this->getProces();
+        }
+    }
+
+    public function setProces()
+    {
+        $restInfo   = $this->restInfo;
+
+        if(class_exists($restInfo['primary_model']))
+        {
+            $this->restModel = $model      = new $restInfo['primary_model'];
+        }
+        else
+        {
+            return Restful::instance()->failResponse(['success'=>false, 'code' => '404', 'message' => 'Model not fount'], 404);
+        }
+
+        $input      = $restInfo['config_data']['request_type'] == "get" ? Input::all() : post();
+
+        $jsonAble   = [];
+        try
+        {
+            $jsonAble   = Models::instance()->getModelJsonable($model);
+        }
+        catch (\Exception $e){}
+
+        $this->restJsonableFields = $jsonAble;
+
+        try
+        {
+            $primary = Models::instance()->getKeyName($model);
+        }
+        catch (\Exception $e)
+        {
+            $primary = "id";
+        }
+
+        if(!empty($input[$primary]))
+        {
+            $this->restModel = $model = $model->find($input[$primary]);
+
+            if(!count($model))
+            {
+                return Restful::instance()->failResponse(['success'=>false, 'code' => '410', 'message' => 'Gone'], 410);
+            }
+        }
+        elseif(empty($input[$primary]) && $restInfo['config_data']['set_type'] == "patch")
+        {
+            return Restful::instance()->failResponse(['success'=>false, 'code' => '412', 'message' => 'You can only send update request'], 412);
+        }
+
+        $indexs         = $restInfo['config_data']['requestindex'];
+        $defaultValues  = empty($restInfo['config_data']['defaultvalue']) ? [] : $restInfo['config_data']['defaultvalue'];
+
+        Event::fire('mavitm.restful.beforeSet', [$this, &$input]);
+
+        // set request values
+        foreach ($indexs as $dbName=>$inputName)
+        {
+            $inputName = trim($inputName);
+
+            if(empty($inputName))
+            {
+                continue;
+            }
+
+            $dbFieldName = @end(explode('.',$dbName));
+
+            if(isset($input[$inputName]))
+            {
+                if(in_array($dbFieldName, $jsonAble) && is_scalar($input[$inputName]))
+                {
+                    try
+                    {
+                        $model->$dbFieldName = json_decode($input[$inputName], true);
+                    }
+                    catch (\Exception $e)
+                    {
+                        $model->$dbFieldName = $input[$inputName];
+                    }
+                }
+                else
+                {
+                    $model->$dbFieldName = $input[$inputName];
+                }
+            }
+        }
+
+        //Set default values
+        if(!empty($defaultValues)){
+            foreach ($defaultValues as $dbName=>$value){
+                $dbFieldName = @end(explode('.',$dbName));
+                $model->$dbFieldName = $this->getDefaultValue($dbFieldName, $value);//$value;
+            }
+        }
+
+        $model->save();
+
+        Event::fire('mavitm.restful.afterSet', [$this, $model]);
+
+        $pri = $model->$primary;
+        $data = $model->find($pri);
+
+        return Restful::instance()->successResponse(['success'=>true, 'code' => '200', 'message' => 'OK', 'data'=>$data], 200);
+    }
+
+    public function getProces()
+    {
+        $restInfo   = $this->restInfo;
+
+        if(class_exists($restInfo['primary_model']))
+        {
+            $this->restModel = $model = new $restInfo['primary_model'];
+        }
+        else
+        {
+            return Restful::instance()->failResponse(['success'=>false, 'code' => '404', 'message' => 'Model not fount'], 404);
+        }
+
+        $query      = $model->Query();
+
+        $whereArr   = empty($restInfo['config_data']['equalization']) ? null : $restInfo['config_data']['equalization'];
+
+        if($whereArr)
+        {
+            foreach ($whereArr as $key=>$value)
+            {
+                $modelValue = $this->getValue($restInfo['config_data']['equalizationValue'][$key]);
+
+                if(empty($modelValue))
+                {
+                    continue;
+                }
+
+                $query->where(
+                    $value,
+                    Models::instance()->whereOperators[$restInfo['config_data']['equalizationOperator'][$key]],
+                    $modelValue
+                );
+            }
+        }
+
+        if(!empty($restInfo['config_data']['orderByActive']))
+        {
+            $query->orderBy($restInfo['config_data']['orderByField'], $restInfo['config_data']['orderByAlignment']);
+        }
+
+        if(!empty($restInfo['config_data']['skip']))
+        {
+            $query->skip($restInfo['config_data']['skip']);
+        }
+
+        if(!empty($restInfo['config_data']['limit']))
+        {
+            $query->take($restInfo['config_data']['limit']);
+        }
+
+        $this->rawData = $data = $query->get();
+
+        $returnData = [];
+        $x = 0;
+
+        $activeFields = $restInfo['displayed_fields']['active'];
+
+        foreach ($data as $collection)
+        {
+
+            if(empty($activeFields))
+            {
+                $returnData[$x] = $collection->toArray();
+            }
+            else
+            {
+                foreach ($activeFields as $f)
+                {
+                    $returnData[$x][$f] = $collection->$f;
+                }
+            }
+
+            if(!empty($restInfo['config_data']['activeRelation']))
+            {
+                foreach ($restInfo['config_data']['activeRelation'] as $relation)
+                {
+                    $returnData[$x][$relation] = $this->relationPrepare($collection, $relation);
+                }
+            }
+
+            $x++;
+        }
+
+        Restful::instance()->setResponseData($returnData);
+
+        return Restful::instance()->successResponse(['success'=>true, 'code' => '200', 'message' => 'OK', 'data' => $returnData], 200);
+    }
+
+    /**
+     * get value for Equalization
+     * @param $equalizationValue
+     * @return bool|mixed|string
+     */
+    private function getValue($equalizationValue)
+    {
+        $postAll        = $this->restInfo['config_data']['request_type'] == "get" ? Input::all() : post();
+
+        $proberties     = $this->getProperties();
+
+        $startWith      = substr(trim($equalizationValue),0,1);
+
+        if($startWith == ":")
+        {
+            $str = substr($equalizationValue, 1);
+
+            if(!empty($this->currentValues[$str]))
+            {
+                return $this->currentValues[$str];
+            }
+            elseif(!empty($postAll[$str]))
+            {
+                return $postAll[$str];
+            }
+            elseif(!empty($proberties[$str]))
+            {
+                return $proberties[$str];
+            }
+            else
+            {
+                return $equalizationValue;
+            }
+        }
+        elseif($startWith == "\\")
+        {
+            return substr($equalizationValue, 1);
+        }
+
+        return $equalizationValue;
+    }
+
+    private function getDefaultValue($field, $values)
+    {
+        $getValues = $values;
+        if(empty($this->restJsonableFields) && in_array($field, $this->restJsonableFields))
+        {
+            try
+            {
+                $getValues = json_decode($values);
+            }
+            catch (\Exception $e){
+                $getValues = $values;
+            }
+        }
+
+        return $getValues;
+    }
+
+    private function relationPrepare($collection, $relationName)
+    {
+        $fields = $this->restInfo['displayed_fields'][$relationName];
+
+        if(empty($fields))
+        {
+            return [];
+        }
+
+        $relationType       = $this->restInfo['config_data']['modelType'][$relationName];
+
+        $isSingularPlural   = Models::instance()->relationTypes[$relationType];
+
+        $returnData = [];
+
+        if($isSingularPlural == "singular")
+        {
+
+            $subCollection = $collection->$relationName;
+
+            foreach ($fields as $f)
+            {
+                if(method_exists($subCollection, $f))
+                {
+                    $returnData[$f] = $subCollection->$f();
+                }
+                else
+                {
+                    @$returnData[$f] = $subCollection->$f;
+                }
+            }
+        }
+        else
+        {
+            $x = 0;
+            foreach ($collection->$relationName as $prop)
+            {
+                foreach ($fields as $f)
+                {
+                    if(method_exists($prop,$f))
+                    {
+                        $returnData[$x][$f] = $prop->$f();
+                    }
+                    else
+                    {
+                        $returnData[$x][$f] = $prop->$f;
+                    }
+                }
+                $x++;
+            }
+        }
+
+        return $returnData;
+    }
+
+    public function requestCounter()
+    {
+        return Counter::where("person_id","=", $this->user->id)
+            ->where("head_code","=",200)
+            ->whereDay('created_at','=',  date('d'))
+            ->count();
+    }
+
+}

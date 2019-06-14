@@ -1,0 +1,28 @@
+name: 'Menu Chính'
+items:
+    -
+        title: 'Trang chủ'
+        nesting: ''
+        type: cms-page
+        url: ''
+        code: ''
+        reference: home
+        cmsPage: ''
+        replace: ''
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: 'Giới thiệu'
+        nesting: '0'
+        type: static-page
+        url: ''
+        code: ''
+        reference: gioi-thieu
+        cmsPage: ''
+        replace: '0'
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'

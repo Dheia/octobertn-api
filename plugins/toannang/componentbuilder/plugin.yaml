@@ -1,0 +1,6 @@
+plugin:
+    name: 'toannang.componentbuilder::lang.plugin.name'
+    description: 'toannang.componentbuilder::lang.plugin.description'
+    author: toannang
+    icon: oc-icon-dribbble
+    homepage: 'https://toannang.com.vn'

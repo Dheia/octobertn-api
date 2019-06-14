@@ -1,0 +1,47 @@
+<div class="row">
+
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.api_name_field')) ?></label>
+            <input type="text" name="name" class="form-control" value="<?=$formModel->name;?>">
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.request_type')) ?></label>
+            <select name="config_data[request_type]" class="form-control custom-select">
+                <option value="">--</option>
+                <option value="get" <?=($formModel->config_data['request_type'] == "get" ? 'selected':'');?>>GET</option>
+                <option value="post" <?=($formModel->config_data['request_type'] == "post" ? 'selected':'');?>>POST</option>
+                <option value="all" <?=($formModel->config_data['request_type'] == "all" ? 'selected':'');?>>All</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.request_type')) ?></label>
+            <select name="config_data[proces]" class="form-control custom-select" data-request="onModelSelect" data-request-update="'models':'#model_select'">
+                <option value="">--</option>
+                <option value="get" <?=($formModel->config_data['proces'] == "get" ? 'selected':'');?>><?= e(trans('mavitm.restful::lang.backend.get_value')) ?></option>
+                <option value="set" <?=($formModel->config_data['proces'] == "set" ? 'selected':'');?>><?= e(trans('mavitm.restful::lang.backend.set_value')) ?></option>
+            </select>
+        </div>
+    </div>
+
+</div>
+
+<div id="model_select">
+    <?php if(!empty($formModel->primary_model)){?>
+    <?=$this->makePartial('models') ?>
+    <?php }?>
+</div>
+
+<hr>
+
+<div id="requestTest"></div>
+
+<?php if(!empty($updateForm)){?>
+    <input type="hidden" name="id" value="<?=$updateForm['id'];?>">
+<?php }?>

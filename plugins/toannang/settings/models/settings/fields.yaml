@@ -1,0 +1,88 @@
+tabs:
+  fields:
+    logo_image:
+        label: 'Logo'
+        type: mediafinder
+        mode: image
+        span: auto
+        tab: 'Cài đặt chung'
+    favicon_image:
+        label: 'Favicon'
+        type: mediafinder
+        mode: image
+        span: auto
+        tab: 'Cài đặt chung'
+    site_name:
+        label: 'Tên website hoặc công ty'
+        type: text
+        span: auto
+        tab: 'Cài đặt chung'
+    address:
+        label: 'Địa chỉ'
+        type: text
+        span: auto
+        tab: 'Cài đặt chung'
+    hotline:
+        label: 'Hotline'
+        type: text
+        span: auto
+        tab: 'Cài đặt chung'
+    phone:
+        label: 'Điện thoại'
+        type: text
+        span: auto
+        tab: 'Cài đặt chung'
+    email:
+        label: 'Email'
+        type: text
+        span: auto
+        tab: 'Cài đặt chung'
+    copyright:
+        label: 'Copyright'
+        type: text
+        span: auto
+        tab: 'Cài đặt chung'
+    socials:
+        type: repeater
+        label: 'Mạng xã hội'
+        titleFrom: 'Mạng xã hội'
+        tab: 'Cài đặt chung'
+        form:
+            fields:
+                name_social:
+                    label: 'Tên'
+                    type: text
+                    span: storm
+                    cssClass: col-xs-4
+                class_social:
+                    label: 'Class'
+                    span: storm
+                    cssClass: col-xs-4
+                link_social:
+                    label: 'Liên kết'
+                    span: storm
+                    cssClass: col-xs-4
+    home_sliders:
+        type: repeater
+        label: 'Slider'
+        titleFrom: 'Slider'
+        tab: 'Trang chủ'
+        form:
+           fields:
+               image:
+                    label: 'Hình'
+                    type: mediafinder
+                    mode: image
+                    span: storm
+                    cssClass: col-xs-4
+               name:
+                   label: 'Tên slide'
+                   type: text
+                   span: storm
+                   cssClass: col-xs-4
+
+               link:
+                   label: 'Liên kết'
+                   type: text
+                   span: storm
+                   cssClass: col-xs-4

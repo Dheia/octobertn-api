@@ -1,0 +1,27 @@
+1.0.1:
+    - 'Initialize plugin.'
+1.0.2:
+    - 'Created table mavitm_restful_api'
+    - builder_table_create_mavitm_restful_api.php
+1.0.3:
+    - 'Created table mavitm_restful_api_users'
+    - builder_table_create_mavitm_restful_api_users.php
+1.0.4:
+    - 'Updated user table'
+    - UserRestFulFields.php
+1.0.5:
+    - 'Created table mavitm_restful_counter'
+    - builder_table_create_mavitm_restful_counter.php
+1.0.6: 'Update model and Restful class file'
+1.0.7: 'Added default parameter selection for data set operations'
+1.0.8: 'Event handlers added'
+1.0.9: 'Mandatory parameter selection for set operations added'
+1.0.10: 'Options added for return responses in data set processing'
+1.0.11:
+    - 'Updated table mavitm_restful_api'
+    - builder_table_update_mavitm_restful_api.php
+1.0.12:
+    - 'Updated table mavitm_restful_counter'
+    - builder_table_update_mavitm_restful_counter.php
+1.0.13:
+    - 'person_id changed the field name to user_id'

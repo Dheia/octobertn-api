@@ -1,0 +1,116 @@
+<?php if($relationsActive){?>
+<div class="control-tabs primary-tabs" data-control="tab">
+    <ul class="nav nav-tabs">
+
+        <?php
+            $x = 0;
+            foreach($relations as $relationName=>$array){
+        ?>
+            <li class="relation_tab_ul <?=($x < 1 ? 'active':'notactive' );?>"><a href="#<?=$relationName;?>"><?=$relationName;?> -</a></li>
+        <?php $x++; }?>
+
+    </ul>
+    <div class="tab-content">
+
+        <?php
+            $x = 0;
+            foreach($relations as $relationName=>$array){
+        ?>
+        <div class="tab-pane <?=($x < 1 ? 'active':'notactive' );?>">
+            <table class="table data">
+                <thead>
+                    <tr>
+                        <th class="list-checkbox">
+                            <div class="checkbox custom-checkbox nolabel">
+                                <input type="checkbox" id="Lists-<?php echo $relationName;?>All" class="checkboxall" data-target=".check<?=$relationName;?>" />
+                                <label for="Lists-<?php echo $relationName;?>All"></label>
+                            </div>
+                        </th>
+                        <th><span><?= e(trans('mavitm.restful::lang.backend.relations')) ?></span></th>
+                        <th><span><?= e(trans('mavitm.restful::lang.backend.fieldName')) ?></span></th>
+                    </tr>
+                </thead>
+            <?php
+                foreach($array as $prop=>$model)
+                {
+                    ?>
+                <tr>
+                    <td class="list-checkbox nolink">
+
+                        <div class="checkbox custom-checkbox nolabel">
+                            <input class="check<?=$relationName;?>"
+                                   type="checkbox"
+                                   name="config_data[activeRelation][]"
+                                   id="Lists-<?php echo $relationName;?>-<?php echo $prop;?>"
+                                   value="<?php echo $prop;?>" <?=(in_array($prop, $activeRelation)  ? 'checked':'');?>>
+                            <label for="Lists-<?php echo $relationName;?>-<?php echo $prop;?>">Check</label>
+                        </div>
+
+                        <input type="hidden" name="config_data[modelType][<?=$prop;?>]" value="<?=$relationName;?>">
+
+                    </td>
+                    <td>
+                        <span><?=$prop;?></span>
+                    </td>
+                    <td>
+                        <table class="table data">
+                            <thead>
+                            <tr>
+                                <th class="list-checkbox">
+                                    <div class="checkbox custom-checkbox nolabel">
+                                        <input type="checkbox" id="Lists-<?php echo $prop;?>All" class="checkboxall" data-target=".check<?=$prop;?>" />
+                                        <label for="Lists-<?php echo $prop;?>All"></label>
+                                    </div>
+                                </th>
+                                <th><span><?= e(trans('mavitm.restful::lang.backend.api_displayed_field')) ?></span></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                    if(!empty($model['fields'])){
+                                    foreach($model['fields'] as $f){
+                                    $inArray = [];
+                                    if(!empty($displayed_fields[$prop]))
+                                    {
+                                        $inArray = $displayed_fields[$prop];
+                                    }
+                                ?>
+                                <tr>
+                                    <td class="list-checkbox nolink">
+
+                                        <div class="checkbox custom-checkbox nolabel">
+                                            <input class="check<?=$prop;?>"
+                                                   type="checkbox"
+                                                   name="selectfields[<?=$prop;?>][]"
+                                                   id="Lists-<?php echo $f;?>-<?php echo $prop;?>"
+                                                   value="<?php echo @end(explode('.',$f));?>" <?=(in_array(@end(explode('.',$f)), $inArray)  ? 'checked':'');?>>
+                                            <label for="Lists-<?php echo $f;?>-<?php echo $prop;?>">Check</label>
+                                        </div>
+
+                                    </td>
+                                    <td>
+                                        <span><?=@end(explode('.',$f));?></span>
+                                    </td>
+                                </tr>
+                                <?php }}?>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                    <?php
+                }
+            ?>
+            </table>
+
+
+
+        </div>
+
+        <?php $x++; }?>
+
+    </div>
+</div>
+    <?php if(empty($relations)){ ?>
+        <p><?= e(trans('mavitm.restful::lang.backendError.doesNotSupportModel')) ?></p>
+    <?php }?>
+<?php }?>

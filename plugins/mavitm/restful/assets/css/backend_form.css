@@ -1,0 +1,44 @@
+.text-center
+{
+    text-align: center;
+}
+.hand
+{
+    cursor: pointer;
+}
+.select_fields_area
+{
+    /*
+    padding: 15px;
+    border: 2px dashed #D1D1D1;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    */
+}
+
+.join_area
+{
+    padding: 15px;
+    border: 2px dashed #D1D1D1;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+.join_area .join_area
+{
+    padding: 0;
+    border: none;
+}
+
+.this_relation
+{
+    background-color: #f3eed6;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.relation_tab_ul
+{
+    /**/display: inline-block !important;
+}

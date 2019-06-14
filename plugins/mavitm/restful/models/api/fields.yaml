@@ -1,0 +1,18 @@
+fields:
+    partial1:
+        span: full
+        path: $/mavitm/restful/controllers/apis/_form.htm
+        type: partial
+tabs:
+    fields:
+        ispublic:
+            label: 'mavitm.restful::lang.backend.form_ispublic'
+            span: full
+            type: switch
+            comment: 'mavitm.restful::lang.backend.form_ispublic_desc'
+            tab: 'mavitm.restful::lang.backend.users'
+        partial2:
+            span: full
+            path: $/mavitm/restful/controllers/apis/users.htm
+            type: partial
+            tab: 'mavitm.restful::lang.backend.users'

@@ -1,0 +1,12 @@
+title: Counters
+modelClass: Mavitm\Restful\Models\Counter
+list: $/mavitm/restful/models/counter/columns.yaml
+recordUrl: 'mavitm/restful/counters/update/:id'
+noRecordsMessage: 'backend::lang.list.no_records'
+recordsPerPage: '100'
+showSetup: true
+showCheckboxes: true
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'

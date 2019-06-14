@@ -1,0 +1,9 @@
+fields:
+    user:
+        label: 'mavitm.restful::lang.backend.select_user'
+        oc.commentPosition: ''
+        nameFrom: name
+        descriptionFrom: email
+        list: $/rainlab/user/models/user/columns.yaml
+        span: full
+        type: recordfinder

@@ -1,0 +1,73 @@
+<div class="row">
+
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.api_name_field')) ?></label>
+            <input type="text" name="name" class="form-control" value="<?=$formModel->name;?>">
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.request_type')) ?></label>
+            <select name="config_data[request_type]" class="form-control custom-select">
+                <option value="">--</option>
+                <option value="get" <?=($formModel->config_data['request_type'] == "get" ? 'selected':'');?>>GET</option>
+                <option value="post" <?=($formModel->config_data['request_type'] == "post" ? 'selected':'');?>>POST</option>
+                <option value="all" <?=($formModel->config_data['request_type'] == "all" ? 'selected':'');?>>All</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.process_type')) ?></label>
+
+            <?php
+                $process = empty($formModel->config_data['process']) ? $formModel->config_data['proces'] : $formModel->config_data['process'];
+            ?>
+
+            <select name="config_data[process]" class="form-control custom-select" data-request="onModelSelect" data-request-update="'models':'#model_select'">
+                <option value="">--</option>
+                <option value="get" <?=($process == "get" ? 'selected':'');?>><?= e(trans('mavitm.restful::lang.backend.get_value')) ?></option>
+                <option value="set" <?=($process == "set" ? 'selected':'');?>><?= e(trans('mavitm.restful::lang.backend.set_value')) ?></option>
+                <option value="del" <?=($process == "del" ? 'selected':'');?>><?= e(trans('mavitm.restful::lang.backend.del_value')) ?></option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div id="model_select">
+    <?php if(!empty($formModel->primary_model)){?>
+    <?=$this->makePartial('models') ?>
+    <?php }?>
+</div>
+
+<hr>
+
+<div id="requestTest"></div>
+
+<?php if(!empty($updateForm)){?>
+    <input type="hidden" name="id" value="<?=$updateForm['id'];?>">
+<?php }?>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.specialBeforeEvents')) ?></label>
+            <input type="text" class="form-control" name="config_data[specialBeforeEvents]" value="<?=$formModel->config_data['specialBeforeEvents'] ?? '';?>">
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.specialAfterEvents')) ?></label>
+            <input type="text" class="form-control" name="config_data[specialAfterEvents]" value="<?=$formModel->config_data['specialAfterEvents'] ?? '';?>">
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.requestUrl')) ?></label>
+            <input type="text" class="form-control" name="config_data[sampleRequestUrl]" value="<?=$formModel->config_data['sampleRequestUrl'] ?? '';?>">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+description = "Layout chuẩn"
+
+[staticPage]
+useContent = 1
+default = 0
+
+[LamRevolutionClothingHeader]
+
+[LamRevolutionClothingFooter]
+
+[LeptHpcosmeticsHeader]
+
+[LamRevolutionClothingHeader LamRevolutionClothingHeader2]
+
+[LeptHpcosmeticsHeader LeptHpcosmeticsHeader2]
+==
+<!DOCTYPE html>
+<html dir="ltr" lang="vi">
+<head>
+    {% partial "meta" %}
+</head>
+<body class="{{ this.page.baseFileName }}">
+    <div class="wrapper"></div>
+    {% component 'LeptHpcosmeticsHeader' %}
+    {% page %}
+    {% component 'staticPage' %}
+    {% component 'LamRevolutionClothingFooter' %}
+    <script src="{{ 'assets/js/bootstrap/js/bootstrap.min.js'|theme }}" type="text/javascript"></script>
+    <script src="{{ 'assets/js/common.js'|theme }}" type="text/javascript"></script>
+    <script src="{{ 'assets/vendor/owl-carousel/owl.carousel.min.js'|theme }}" type="text/javascript"></script>
+    <script src="{{ 'assets/js/jquery.scrollUp.min.js'|theme }}" type="text/javascript"></script>
+    {% scripts %}
+    <script src="{{ 'assets/js/main.js'|theme }}" type="text/javascript"></script>
+</body>
+</html>

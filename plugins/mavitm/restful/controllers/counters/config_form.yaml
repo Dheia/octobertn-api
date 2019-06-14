@@ -1,0 +1,11 @@
+name: Counters
+modelClass: Mavitm\Restful\Models\Counter
+form: $/mavitm/restful/models/counter/fields.yaml
+defaultRedirect: mavitm/restful/counters
+create:
+    redirect: 'mavitm/restful/counters/update/:id'
+    redirectClose: mavitm/restful/counters
+update:
+    redirect: mavitm/restful/counters
+    redirectClose: mavitm/restful/counters
+preview: {  }

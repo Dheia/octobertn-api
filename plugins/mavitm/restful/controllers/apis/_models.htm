@@ -1,0 +1,32 @@
+<?php if($modelselect){?>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.primary_model_field')) ?></label>
+            <?= Form::select('primary_model', $models,  (empty($formModel->primary_model) ? null : $formModel->primary_model),
+            [
+            'class' => 'form-control custom-select',
+            'emptyOption' => 'Choose...',
+            'data-request' => 'onModelProperties',
+            'data-request-data' => "model:'primary_model'",
+            'data-request-update' => "'".$partialName."':'#select_fields_area'"
+            ]) ?>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="select_fields_area" id="select_fields_area">
+            <?php
+                if(!empty($formModel->primary_model)){
+                    //echo $this->makePartial('fieldcheckbox');
+                    echo $this->makePartial($partialName);
+                }
+            ?>
+        </div>
+    </div>
+</div>
+
+<?php }?>

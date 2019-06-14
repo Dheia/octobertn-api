@@ -1,0 +1,42 @@
+columns:
+    id:
+        label: ID
+        type: number
+        sortable: true
+    user_id:
+        label: 'mavitm.restful::lang.backend.users'
+        type: number
+        searchable: true
+        sortable: true
+        select: name
+        relation: user
+    api_id:
+        label: api_id
+        type: number
+        searchable: true
+        sortable: true
+        select: name
+        relation: api
+    id_address:
+        label: id_address
+        type: text
+        searchable: true
+        sortable: true
+    total_row:
+        label: total_row
+        type: text
+        sortable: true
+    head_code:
+        label: head_code
+        type: text
+        sortable: true
+    created_at:
+        label: created_at
+        type: datetime
+        invisible: true
+        sortable: true
+    updated_at:
+        label: updated_at
+        type: datetime
+        invisible: true
+        sortable: true

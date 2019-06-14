@@ -1,0 +1,47 @@
+1559818171a:1:{s:10:"master.htm";a:9:{s:8:"fileName";s:10:"master.htm";s:7:"content";s:988:"description = "Layout chuẩn"
+
+[staticPage]
+useContent = 1
+default = 0
+
+[LamRevolutionClothingHeader]
+
+[LamRevolutionClothingFooter]
+==
+<!DOCTYPE html>
+<html dir="ltr" lang="vi">
+<head>
+    {% partial "meta" %}
+</head>
+<body class="{{ this.page.baseFileName }}">
+    <div class="wrapper"></div>
+    {% component 'LamRevolutionClothingHeader' %}
+    {% page %}
+    {% component 'staticPage' %}
+    {% component 'LamRevolutionClothingFooter' %}
+    <script src="{{ 'assets/js/bootstrap/js/bootstrap.min.js'|theme }}" type="text/javascript"></script>
+    <script src="{{ 'assets/js/common.js'|theme }}" type="text/javascript"></script>
+    <script src="{{ 'assets/vendor/owl-carousel/owl.carousel.min.js'|theme }}" type="text/javascript"></script>
+    <script src="{{ 'assets/js/jquery.scrollUp.min.js'|theme }}" type="text/javascript"></script>
+    {% scripts %}
+    <script src="{{ 'assets/js/main.js'|theme }}" type="text/javascript"></script>
+</body>
+</html>";s:5:"mtime";i:1559784471;s:6:"markup";s:841:"<!DOCTYPE html>
+<html dir="ltr" lang="vi">
+<head>
+    {% partial "meta" %}
+</head>
+<body class="{{ this.page.baseFileName }}">
+    <div class="wrapper"></div>
+    {% component 'LamRevolutionClothingHeader' %}
+    {% page %}
+    {% component 'staticPage' %}
+    {% component 'LamRevolutionClothingFooter' %}
+    <script src="{{ 'assets/js/bootstrap/js/bootstrap.min.js'|theme }}" type="text/javascript"></script>
+    <script src="{{ 'assets/js/common.js'|theme }}" type="text/javascript"></script>
+    <script src="{{ 'assets/vendor/owl-carousel/owl.carousel.min.js'|theme }}" type="text/javascript"></script>
+    <script src="{{ 'assets/js/jquery.scrollUp.min.js'|theme }}" type="text/javascript"></script>
+    {% scripts %}
+    <script src="{{ 'assets/js/main.js'|theme }}" type="text/javascript"></script>
+</body>
+</html>";s:4:"code";N;s:11:"description";s:14:"Layout chuẩn";s:10:"staticPage";a:2:{s:10:"useContent";s:1:"1";s:7:"default";s:1:"0";}s:27:"LamRevolutionClothingHeader";a:0:{}s:27:"LamRevolutionClothingFooter";a:0:{}}}

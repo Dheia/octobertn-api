@@ -1,0 +1,6 @@
+1559817601a:1:{s:8:"menu.htm";a:7:{s:8:"fileName";s:8:"menu.htm";s:7:"content";s:79:"[staticMenu]
+code = "main-menu"
+
+[viewBag]
+==
+{% component 'staticMenu' %}";s:5:"mtime";i:1559726566;s:6:"markup";s:28:"{% component 'staticMenu' %}";s:4:"code";N;s:10:"staticMenu";a:1:{s:4:"code";s:9:"main-menu";}s:7:"viewBag";a:0:{}}}

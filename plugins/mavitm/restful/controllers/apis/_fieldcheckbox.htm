@@ -1,0 +1,182 @@
+<p><?= e(trans('mavitm.restful::lang.backend.api_displayed_field')) ?></p>
+<div class="control-list">
+    <table class="table data">
+        <thead>
+            <tr>
+
+                <th class="list-checkbox">
+                    <div class="checkbox custom-checkbox nolabel">
+                        <input type="checkbox" id="Lists-<?php echo $checkboxrandstr;?>All" class="checkboxall" data-target=".check<?=$arearandstr;?>" />
+                        <label for="Lists-<?php echo $checkboxrandstr;?>All"></label>
+                    </div>
+                </th>
+
+                <th><span><?= e(trans('mavitm.restful::lang.backend.fieldName')) ?></span></th>
+
+                <?php if($modelselect == "get"){?>
+                <th><span><?= e(trans('mavitm.restful::lang.backend.equalization')) ?></span></th>
+                <th><span><?= e(trans('mavitm.restful::lang.backend.equalizationOperator')) ?></span></th>
+                <th><span><?= e(trans('mavitm.restful::lang.backend.equalizationValue')) ?></span></th>
+                <?php }?>
+
+                <?php if($modelselect == "set"){?>
+                <th><span>(<?= e(trans('mavitm.restful::lang.backend.set_value')) ?>) <?= e(trans('mavitm.restful::lang.backend.requestIndexName')) ?></span>
+                </th>
+                <?php }?>
+
+            </tr>
+        </thead>
+        <tbody>
+            <?php if(!empty($fields) && count($fields)){foreach($fields as $key=>$name){?>
+                <tr>
+
+                    <td class="list-checkbox nolink">
+
+                        <div class="checkbox custom-checkbox nolabel">
+                            <input class="check<?=$arearandstr;?>"
+                                   type="checkbox"
+                                   name="selectfields[active][<?php echo $name;?>]"
+                                   id="Lists-<?php echo $checkboxrandstr;?>-<?php echo $key;?>"
+                                   value="<?php echo @end(explode('.',$name));?>" <?=(in_array(@end(explode('.',$name)), $activeFields)  ? 'checked':'');?>>
+
+                            <label for="Lists-<?php echo $checkboxrandstr;?>-<?php echo $key;?>">Check</label>
+                        </div>
+
+                    </td>
+                    <td>
+                        <label for="Lists-<?php echo $checkboxrandstr;?>-<?php echo $key;?>" class="hand"><?php echo $name;?></label>
+                    </td>
+
+                    <?php if($modelselect == "get"){?>
+                    <td>
+                        <div class="checkbox custom-checkbox nolabel">
+                            <input type="checkbox"
+                                   name="config_data[equalization][<?php echo $name;?>]"
+                                   id="equalization-<?php echo @end(explode('.',$name));?>"
+                                   value="<?php echo @end(explode('.',$name));?>" <?=(in_array(@end(explode('.',$name)), $equalization)  ? 'checked':'');?>>
+                            <label for="equalization-<?php echo @end(explode('.',$name));?>"></label>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div class="form-group">
+                            <select class="form-control custom-select select-no-search" name="config_data[equalizationOperator][<?php echo $name;?>]">
+                                <option value="">--</option>
+                                <option value="1" <?=(@$equalizationOperator[$name] == "1" ? 'selected':'');?>> <?=htmlspecialchars("=");?>   </option>
+                                <option value="2" <?=(@$equalizationOperator[$name] == "2" ? 'selected':'');?>> <?=htmlspecialchars("!=");?>  </option>
+                                <option value="3" <?=(@$equalizationOperator[$name] == "3" ? 'selected':'');?>> <?=htmlspecialchars("<");?>   </option>
+                                <option value="4" <?=(@$equalizationOperator[$name] == "4" ? 'selected':'');?>> <?=htmlspecialchars(">");?>   </option>
+                                <option value="5" <?=(@$equalizationOperator[$name] == "5" ? 'selected':'');?>> <?=htmlspecialchars(">=");?>  </option>
+                                <option value="6" <?=(@$equalizationOperator[$name] == "6" ? 'selected':'');?>> <?=htmlspecialchars("<=");?>  </option>
+                            </select>
+                        </div>
+                    </td>
+
+                    <td>
+                        <input type="text"
+                               name="config_data[equalizationValue][<?php echo $name;?>]"
+                               value="<?=(empty($equalizationValue[$name]) ? '': $equalizationValue[$name]);?>"
+                               class="form-control"
+                               placeholder=":requestName">
+                    </td>
+                    <?php }?>
+
+                    <?php if($modelselect == "set"){?>
+                    <td>
+                        <input type="text"
+                               name="config_data[requestindex][<?php echo $name;?>]"
+                               class="form-control"
+                               value="<?php echo ( empty($requestindex[$name]) ? ( empty($requestindex)? @end(explode('.',$name)) : '' ) : $requestindex[$name] );?>">
+                    </td>
+                    <?php }?>
+                </tr>
+            <?php }}?>
+        </tbody>
+    </table>
+</div>
+
+<?php if($modelselect == "get"){?>
+
+<div class="row">
+    <div class="col-xs-4 col-4">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.orderByActive')) ?></label>
+            <label class="custom-switch">
+                <input type="checkbox" name="config_data[orderByActive]" id="orderByActive" value="1"
+                       data-request="onModelRelations"
+                       data-request-update = "'relationselect':'#relation_area'" <?=(empty($formModel->config_data['orderByActive']) ? '' : 'checked');?>>
+                <span><span>On</span><span>Off</span></span>
+                <a class="slide-button"></a>
+            </label>
+        </div>
+    </div>
+    <div class="col-xs-4 col-4">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.orderByField')) ?></label>
+            <select class="form-control custom-select select-no-search" name="config_data[orderByField]">
+                <option value="">--</option>
+                <?php
+                    if(!empty($fields) && count($fields)){
+                        $orderByField = '';
+                        if(!empty($formModel->config_data['orderByField']))
+                        {
+                            $orderByField = $formModel->config_data['orderByField'];
+                        }
+                        foreach($fields as $key=>$name){
+                ?>
+                        <option value="<?php echo @end(explode('.',$name));?>" <?=($orderByField == @end(explode('.',$name)) ? 'selected':'');?>><?php echo @end(explode('.',$name));?></option>
+                <?php }}?>
+            </select>
+        </div>
+    </div>
+    <div class="col-xs-4 col-4">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.orderByAlignment')) ?></label>
+            <select class="form-control custom-select select-no-search" name="config_data[orderByAlignment]">
+                <option value="">--</option>
+                <option value="asc" <?=(@$formModel->config_data['orderByAlignment'] == "asc" ? 'selected':'');?>><?= e(trans('mavitm.restful::lang.backend.ascending')) ?></option>
+                <option value="desc" <?=(@$formModel->config_data['orderByAlignment'] == "desc" ? 'selected':'');?>><?= e(trans('mavitm.restful::lang.backend.descending')) ?></option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-6 col-6">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.skip')) ?></label>
+            <input type="number" class="form-control" value="<?=@$formModel->config_data['skip'];?>" name="config_data[skip]">
+        </div>
+    </div>
+    <div class="col-xs-6 col-6">
+        <div class="form-group">
+            <label><?= e(trans('mavitm.restful::lang.backend.limit')) ?></label>
+            <input type="number" class="form-control" value="<?=@$formModel->config_data['limit'];?>" name="config_data[limit]">
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<?php }?>
+
+<?php if($modelselect == "get"){?>
+    <div class="form-group">
+        <label><?= e(trans('mavitm.restful::lang.backend.relations')) ?></label>
+        <label class="custom-switch">
+            <input type="checkbox" name="config_data[relation]" id="relationcheckbox" value="1"
+                   data-request="onModelRelations"
+                   data-request-update = "'relationselect':'#relation_area'" <?=($relationsActive ? 'checked':'');?>>
+            <span><span>On</span><span>Off</span></span>
+            <a class="slide-button"></a>
+        </label>
+    </div>
+
+    <div id="relation_area">
+        <?php
+        if(!empty($formModel->config_data['relation'])){
+            echo $this->makePartial('relationselect');
+        }
+        ?>
+    </div>
+<?php }?>

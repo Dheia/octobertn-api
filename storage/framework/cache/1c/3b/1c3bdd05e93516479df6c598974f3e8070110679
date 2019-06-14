@@ -1,0 +1,10 @@
+1559818171a:1:{s:14:"gioi-thieu.htm";a:7:{s:8:"fileName";s:14:"gioi-thieu.htm";s:7:"content";s:194:"[viewBag]
+title = "Giới thiệu"
+url = "/gioi-thieu"
+layout = "master"
+is_hidden = 0
+navigation_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+localeUrl[en] = "/about-us"
+==";s:5:"mtime";i:1559722183;s:6:"markup";s:0:"";s:4:"code";N;s:7:"viewBag";a:8:{s:5:"title";s:14:"Giới thiệu";s:3:"url";s:11:"/gioi-thieu";s:6:"layout";s:6:"master";s:9:"is_hidden";s:1:"0";s:17:"navigation_hidden";s:1:"0";s:11:"robot_index";s:5:"index";s:12:"robot_follow";s:6:"follow";s:9:"localeUrl";a:1:{s:2:"en";s:9:"/about-us";}}s:12:"parsedMarkup";s:0:"";}}

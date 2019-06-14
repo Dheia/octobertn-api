@@ -1,0 +1,8 @@
+users:
+    label: mavitm.restful::lang.backend.select_user
+    view:
+        list: $/mavitm/restful/models/users/columns.yaml
+        toolbarButtons: create|delete
+    manage:
+        form: $/mavitm/restful/models/users/fields.yaml
+        recordsPerPage: 10

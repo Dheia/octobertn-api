@@ -1,0 +1,113 @@
+<header>
+    <div class="top" id="top">
+        <div class="container">
+            <div class="top-content">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="top-right">
+                            <div id="top-links">
+                                <div class="moreinfo">
+                                    <i class="fa fa-align-right"></i>
+                                    <ul class="moreinfo-content">
+                                        <li><a href="#" title="Đăng Nhập"><span>Đăng Nhập</span></a>
+                                        </li>
+                                        <li><a href="#" id="wishlist-total"
+                                               title="Yêu thích (0)"><span>Yêu thích (0)</span></a></li>
+                                        <li><a href="#" title="Thanh toán"> <span>Thanh toán</span></a>
+                                        </li>
+                                        <li><a href="#" title="Tài Khoản"><span>Tài Khoản</span> </span>
+                                        </a></li>
+                                    </ul>
+                                </div>
+                                <div class="language">
+                                    <div>
+
+                                            <div class="btn-group">
+                                                {% partial "lang-switcher" %}
+                                            </div>
+                                            <input type="hidden" name="code" value=""/>
+                                            <input type="hidden" name="redirect"
+                                                   value="#"/>
+
+                                    </div>
+                                </div>
+                                <div class="top-cart">
+                                    <div id="cart" class="btn-group btn-block">
+                                        <a href="#"
+                                                class="btn btn-inverse btn-block btn-lg cart-btn"><i
+                                                class="fa fa-shopping-cart"></i><span id="cart-total"><span
+                                                class="num_product">0</span> <span
+                                                class="text-cart">sản phẩm  </span> <span
+                                                class="price">0 VNĐ</span></span></a>
+
+                                    </div>
+                                </div>
+                                <div class="top-search">
+                                    <div id="search_box">
+                                        <i class="fa fa-search"></i>
+                                        <div id="search">
+                                            <div class="search-inner">
+                                                <form action="{{ url('search') }}" method="get">
+                                                <input type="text" name="search" value=""
+                                                       placeholder="Tìm kiếm sản phẩm" class="form-control input-lg"/>
+                                                <span class="button_search">
+                <button type="button" class="btn btn-default btn-lg"><i class="fa fa-search"></i></button>
+              </span></form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <column class="position-display">
+                            <div>
+                                <div id="logo">
+                                    <a href="{{ url('/') }}">
+                                        {% if logo is null %}
+                                        {{ site_name }}
+                                        {% else %}
+                                        <img src="{{ logo }}" title="{{ site_name }}"
+                                             alt="{{ site_name }}" class="img-responsive "/>
+                                        {% endif %}
+                                    </a>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="wapper-menu">
+                                    <div class="close-header-layer"></div>
+                                    <div class="menu_horizontal" id="menu_id_MB01">
+                                        <div class="navbar-header">
+                                            <button type="button" data-toggle="collapse"
+                                                    data-target="#navbar-collapse-MB01" class="navbar-toggle">
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                                <span class="icon-bar"></span>
+                                            </button>
+                                        </div>
+                                        <div class="mask-container"></div>
+                                        <div id="navbar-collapse-MB01" class="menu-content">
+                                            <div class="close-menu"></div>
+                                            {% component "mainMenu" %}
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <script>
+                                        $(function () {
+                                            window.prettyPrint && prettyPrint()
+                                            $(document).on('click', '.navbar .dropdown-menu', function (e) {
+                                                e.stopPropagation()
+                                            })
+                                        })
+                                    </script>
+                                </div>
+                            </div>
+                        </column>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
+</header>

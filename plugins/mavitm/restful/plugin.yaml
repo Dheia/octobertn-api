@@ -1,0 +1,30 @@
+plugin:
+    name: 'mavitm.restful::lang.plugin.name'
+    description: 'mavitm.restful::lang.plugin.description'
+    author: Mavitm
+    icon: oc-icon-database
+    homepage: ''
+permissions:
+    resful_view:
+        tab: 'mavitm.restful::lang.plugin.name'
+        label: 'mavitm.restful::lang.backend.permission_view'
+navigation:
+    restful-menu-item:
+        label: 'mavitm.restful::lang.backend.main_menu'
+        url: mavitm/restful/apis
+        icon: icon-database
+        permissions:
+            - resful_view
+        sideMenu:
+            restful-menu-shortcut:
+                label: 'mavitm.restful::lang.backend.api_list'
+                url: mavitm/restful/apis
+                icon: icon-th-list
+                permissions:
+                    - resful_view
+            restful-counter-item:
+                label: 'mavitm.restful::lang.backend.total'
+                url: mavitm/restful/counters
+                icon: icon-download
+                permissions:
+                    - resful_view

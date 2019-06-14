@@ -1,0 +1,38 @@
+fields:
+    user:
+        label: 'mavitm.restful::lang.backend.select_user'
+        oc.commentPosition: ''
+        nameFrom: name
+        descriptionFrom: description
+        list: $/rainlab/user/models/user/columns.yaml
+        span: auto
+        type: recordfinder
+    api:
+        label: 'mavitm.restful::lang.components.selectApi'
+        oc.commentPosition: ''
+        nameFrom: name
+        descriptionFrom: description
+        list: $/mavitm/restful/models/api/columns.yaml
+        span: auto
+        type: recordfinder
+    id_address:
+        label: 'mavitm.restful::lang.backend.id_address'
+        span: auto
+        type: text
+    total_row:
+        label: 'mavitm.restful::lang.backend.total'
+        oc.commentPosition: ''
+        span: auto
+        type: number
+    head_code:
+        label: 'mavitm.restful::lang.backend.head_code'
+        oc.commentPosition: ''
+        span: auto
+        type: number
+    rawData:
+        span: full
+        path: $/mavitm/restful/controllers/counters/_rawdata.htm
+        context:
+            - update
+            - preview
+        type: partial

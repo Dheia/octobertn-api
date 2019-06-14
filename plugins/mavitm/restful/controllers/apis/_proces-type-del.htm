@@ -1,0 +1,82 @@
+<h2><?= e(trans('mavitm.restful::lang.backend.api_displayed_field')) ?></h2>
+<div class="control-list">
+    <table class="table data">
+        <thead>
+        <tr>
+            <th class="list-checkbox">
+                <div class="checkbox custom-checkbox nolabel">
+                    <input type="checkbox" id="Lists-<?php echo $checkboxrandstr;?>All" class="checkboxall" data-target=".check<?=$arearandstr;?>" />
+                    <label for="Lists-<?php echo $checkboxrandstr;?>All"></label>
+                </div>
+            </th>
+            <th><span><?= e(trans('mavitm.restful::lang.backend.fieldName')) ?></span></th>
+            <th><span><?= e(trans('mavitm.restful::lang.backend.required')) ?></span></th>
+            <th><span><?= e(trans('mavitm.restful::lang.backend.equalization')) ?></span></th>
+            <th><span><?= e(trans('mavitm.restful::lang.backend.equalizationOperator')) ?></span></th>
+            <th><span><?= e(trans('mavitm.restful::lang.backend.equalizationValue')) ?></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if(!empty($fields) && count($fields)){foreach($fields as $key=>$name){?>
+        <tr>
+
+            <td class="list-checkbox nolink">
+
+                <div class="checkbox custom-checkbox nolabel">
+                    <input class="check<?=$arearandstr;?>"
+                           type="checkbox"
+                           name="selectfields[active][<?php echo $name;?>]"
+                           id="Lists-<?php echo $checkboxrandstr;?>-<?php echo $key;?>"
+                           value="<?php echo @end(explode('.',$name));?>" <?=(in_array(@end(explode('.',$name)), $activeFields)  ? 'checked':'');?>>
+
+                    <label for="Lists-<?php echo $checkboxrandstr;?>-<?php echo $key;?>">Check</label>
+                </div>
+
+            </td>
+            <td>
+                <label for="Lists-<?php echo $checkboxrandstr;?>-<?php echo $key;?>" class="hand"><?php echo $name;?></label>
+            </td>
+
+            <td>
+                <div class="checkbox custom-checkbox nolabel">
+                    <input
+                            type="checkbox"
+                            id="required-<?php echo $checkboxrandstr;?>-<?php echo $key;?>"
+                            name="config_data[required][<?php echo $name;?>]"
+                            value="1" <?=(!empty($required[$name]) ? 'checked':'');?>>
+                    <label for="required-<?php echo $checkboxrandstr;?>-<?php echo $key;?>">Check</label>
+                </div>
+            </td>
+
+            <td>
+                <div class="checkbox custom-checkbox nolabel">
+                    <input type="checkbox"
+                           name="config_data[equalization][<?php echo $name;?>]"
+                           id="equalization-<?php echo @end(explode('.',$name));?>"
+                           value="<?php echo @end(explode('.',$name));?>" <?=(in_array(@end(explode('.',$name)), $equalization)  ? 'checked':'');?>>
+                    <label for="equalization-<?php echo @end(explode('.',$name));?>"></label>
+                </div>
+            </td>
+
+            <td>
+                <div class="form-group">
+                    <select class="form-control custom-select select-no-search" name="config_data[equalizationOperator][<?php echo $name;?>]">
+                        <option value="">--</option>
+                        <option value="1" <?=(@$equalizationOperator[$name] == "1" ? 'selected':'');?>> <?=htmlspecialchars("=");?>   </option>
+                        <option value="2" <?=(@$equalizationOperator[$name] == "2" ? 'selected':'');?>> <?=htmlspecialchars("!=");?>  </option>
+                        <option value="3" <?=(@$equalizationOperator[$name] == "3" ? 'selected':'');?>> <?=htmlspecialchars("<");?>   </option>
+                        <option value="4" <?=(@$equalizationOperator[$name] == "4" ? 'selected':'');?>> <?=htmlspecialchars(">");?>   </option>
+                        <option value="5" <?=(@$equalizationOperator[$name] == "5" ? 'selected':'');?>> <?=htmlspecialchars(">=");?>  </option>
+                        <option value="6" <?=(@$equalizationOperator[$name] == "6" ? 'selected':'');?>> <?=htmlspecialchars("<=");?>  </option>
+                    </select>
+                </div>
+            </td>
+
+            <td>
+                <span>input(<?=@end(explode('.',$name));?>)</span>
+            </td>
+        </tr>
+        <?php }}?>
+        </tbody>
+    </table>
+</div>
